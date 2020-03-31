@@ -1,0 +1,32 @@
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <title>육목 | BaaaaaaaaaarkingDog</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+  <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+  <style>
+  @import url(http://fonts.googleapis.com/earlyaccess/notosanskr.css); font-family: 'Noto Sans KR', sans-serif;
+  </style>
+</head>
+
+<body>
+  <div id="setting">
+    <input type="range" id="slider1" value="0" min="0" max="1" width="50%"> </input>
+    <p style="font-family: Noto Sans KR;" class = "info1">You First</p>
+    <input type="range" id="slider2" value="1" min="1" max="5" width="50%"> </input>
+    <p style="font-family: Noto Sans KR;" class = "info2">Level 1 - 컴퓨터는 한 수 앞까지 생각합니다. 연산이 오래 걸리지 않고 거의 바로 착수합니다.</p>
+    <button type="button" class="btn btn btn-info" id="start"> start </button>
+    <p></p>
+  </div>
+  <div id="game">
+  	<canvas id="board" width="600" height="600"></canvas>
+  </div>
+  <div id="setstatus">  
+    <input type="text" style="font-family: Noto Sans KR;" readonly class="form-control-plaintext" id="status" value="난이도와 선공/후공을 정한 후 버튼을 눌러 게임을 시작하세요.">
+  </div>
+</body>
+
+<script type="text/javascript" src="js/connect6.js"></script>
+
+</html>
