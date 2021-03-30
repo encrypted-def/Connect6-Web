@@ -36,7 +36,10 @@ def parse_result():
     sqlconn.close()
   except:
     pass
-  return table
+  msg = 'STATISTIC '
+  for i in range(5):
+    msg += f'{table[i][1]} {table[i][0]} '
+  return msg
 
 def isWin(board, player):
   dx = [1,1,1,0]
@@ -67,12 +70,7 @@ def mySleep():
 async def conn(websocket, path):
   loop = asyncio.get_event_loop()
   if DEBUG: print("connection established..")
-  table = parse_result()
-  msg = ''
-  for i in range(5):
-    msg += f'{table[i][1]} {table[i][0]} '
-  await asyncio.wait_for(websocket.send(msg), timeout=TIMEOUT) # sends win/lose message
-  if DEBUG: print(f"send {msg}")
+  await asyncio.wait_for(websocket.send(parse_result()), timeout=TIMEOUT) # sends win/lose message
   CONNECT6_BINARY = '../cpp-backend/Connect6'
   try:
     p = subprocess.Popen(CONNECT6_BINARY, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, universal_newlines=True)    
@@ -112,6 +110,8 @@ async def conn(websocket, path):
         if binary_recv != "BLOCK OK":
           assert(0) #raise BlockError
         await asyncio.wait_for(websocket.send(block_msg), timeout=TIMEOUT)
+        await asyncio.wait_for(websocket.send(parse_result()), timeout=TIMEOUT)
+        
 
       if not HumanFirst:
         if DEBUG: print("MYMOVE 1")
