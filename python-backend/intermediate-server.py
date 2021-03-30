@@ -23,6 +23,20 @@ def process_send(p, s):
 def process_recv(p):
   return p.stdout.readline().strip()
 
+def parse_result():
+  table = [[0]*2 for i in range(5)]
+  try:
+    sqlconn = sqlite3.connect('sqlite.db')
+    c = sqlconn.cursor()
+    c.execute("SELECT * from statistic")
+    records = c.fetchall()
+    for row in records:
+      lev, state, result = row
+      table[lev-1][state] = result
+    sqlconn.close()
+  except:
+    pass
+  return table
 
 def isWin(board, player):
   dx = [1,1,1,0]
@@ -53,6 +67,12 @@ def mySleep():
 async def conn(websocket, path):
   loop = asyncio.get_event_loop()
   if DEBUG: print("connection established..")
+  table = parse_result()
+  msg = ''
+  for i in range(5):
+    msg += f'{table[i][1]} {table[i][0]} '
+  await asyncio.wait_for(websocket.send(msg), timeout=TIMEOUT) # sends win/lose message
+  if DEBUG: print(f"send {msg}")
   CONNECT6_BINARY = '../cpp-backend/Connect6'
   try:
     p = subprocess.Popen(CONNECT6_BINARY, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, universal_newlines=True)    

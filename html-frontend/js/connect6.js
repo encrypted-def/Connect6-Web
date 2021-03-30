@@ -11,6 +11,12 @@ var cnt = 0;
 var sendmove = "";
 var mytotmove = 0;
 var websocket = new WebSocket("ws://localhost:8765"); // server ip
+
+websocket.onmessage = function(evt){
+    recv_winlose(evt)
+  };
+
+
 var boardArray = new Array(19); 
 for (var i = 0; i < 19; i++) {
     boardArray[i] = new Array(19);
@@ -236,6 +242,17 @@ function updateBoard(){
 
 //////// websocket ///////////////
 
+
+function recv_winlose(evt){
+  var query = evt.data;
+  var query_chunk = query.split(' ');
+  $("#statistic1").val("Level 1 - " + query_chunk[0] + "승 " + query_chunk[1] + "패");
+  $("#statistic2").val("Level 2 - " + query_chunk[2] + "승 " + query_chunk[3] + "패");
+  $("#statistic3").val("Level 3 - " + query_chunk[4] + "승 " + query_chunk[5] + "패");
+  $("#statistic4").val("Level 4 - " + query_chunk[6] + "승 " + query_chunk[7] + "패");
+  $("#statistic5").val("Level 5 - " + query_chunk[8] + "승 " + query_chunk[9] + "패");
+  
+}
 
 function recvdata(evt){
   var query = evt.data;
