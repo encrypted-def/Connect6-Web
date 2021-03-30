@@ -13,7 +13,7 @@ var mytotmove = 0;
 var websocket = new WebSocket("ws://localhost:8765"); // server ip
 
 websocket.onmessage = function(evt){
-    recv_winlose(evt)
+    recvdata(evt)
   };
 
 
@@ -149,6 +149,7 @@ $('#start').click(function(){
     $("#status").val("컴퓨터의 턴을 기다리는 중입니다.");
   }
   websocket.send(setting);
+
   gamestart = true;  
 });
 
@@ -243,16 +244,7 @@ function updateBoard(){
 //////// websocket ///////////////
 
 
-function recv_winlose(evt){
-  var query = evt.data;
-  var query_chunk = query.split(' ');
-  $("#statistic1").val("Level 1 - " + query_chunk[0] + "승 " + query_chunk[1] + "패");
-  $("#statistic2").val("Level 2 - " + query_chunk[2] + "승 " + query_chunk[3] + "패");
-  $("#statistic3").val("Level 3 - " + query_chunk[4] + "승 " + query_chunk[5] + "패");
-  $("#statistic4").val("Level 4 - " + query_chunk[6] + "승 " + query_chunk[7] + "패");
-  $("#statistic5").val("Level 5 - " + query_chunk[8] + "승 " + query_chunk[9] + "패");
-  
-}
+
 
 function recvdata(evt){
   var query = evt.data;
@@ -262,6 +254,13 @@ function recvdata(evt){
     var y = Number(query_chunk[2]);
     boardArray[x][y] = 3;
     updateBoard();
+  }
+  else if(query_chunk[0] == "STATISTIC"){
+    $("#statistic1").val("Level 1 - " + query_chunk[1] + "승 " + query_chunk[2] + "패");
+    $("#statistic2").val("Level 2 - " + query_chunk[3] + "승 " + query_chunk[4] + "패");
+    $("#statistic3").val("Level 3 - " + query_chunk[5] + "승 " + query_chunk[6] + "패");
+    $("#statistic4").val("Level 4 - " + query_chunk[7] + "승 " + query_chunk[8] + "패");
+    $("#statistic5").val("Level 5 - " + query_chunk[9] + "승 " + query_chunk[10] + "패");
   }
   else{
     if(query_chunk.length == 2){
